@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Дякуємо за покупку! — HairBloom</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-display { font-family: 'Playfair Display', serif; }
+    @keyframes pop {
+      0%   { transform: scale(0.5); opacity: 0; }
+      70%  { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-pop  { animation: pop 0.6s ease forwards; }
+    .animate-fade { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+    .delay-1 { animation-delay: 0.3s; }
+    .delay-2 { animation-delay: 0.6s; }
+    .delay-3 { animation-delay: 0.9s; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 via-white to-rose-50 flex items-center justify-center px-4 py-16">
+
+  <div class="max-w-lg w-full text-center">
+
+    <!-- Checkmark -->
+    <div class="animate-pop w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
+      <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+      </svg>
+    </div>
+
+    <!-- Title -->
+    <h1 class="font-display text-4xl md:text-5xl font-black text-gray-900 mb-3 animate-fade delay-1">
+      Оплата пройшла! 🎉
+    </h1>
+    <p class="text-gray-500 text-lg mb-8 animate-fade delay-1">
+      Дякуємо за покупку інтенсиву <strong>HairBloom</strong>.<br/>
+      Тепер перейди в Telegram-бота щоб отримати доступ до всіх матеріалів.
+    </p>
+
+    <!-- What's waiting -->
+    <div class="bg-white rounded-2xl shadow-sm border border-green-100 p-6 mb-8 text-left animate-fade delay-2">
+      <h3 class="font-bold text-gray-900 mb-4">📦 Що на тебе чекає:</h3>
+      <ul class="space-y-3">
+        <li class="flex gap-3 items-start"><span class="text-green-500 mt-0.5">✅</span><span class="text-gray-600">9 модулів з догляду за волоссям</span></li>
+        <li class="flex gap-3 items-start"><span class="text-green-500 mt-0.5">✅</span><span class="text-gray-600">Розшифровка аналізів та список вітамінів</span></li>
+        <li class="flex gap-3 items-start"><span class="text-green-500 mt-0.5">✅</span><span class="text-gray-600">Правила харчування та рецепти смузі</span></li>
+        <li class="flex gap-3 items-start"><span class="text-green-500 mt-0.5">✅</span><span class="text-gray-600">Гайд по вибору шампунів і сироваток</span></li>
+        <li class="flex gap-3 items-start"><span class="text-rose-400 mt-0.5">🎁</span><span class="text-gray-600"><strong>Бонус:</strong> чек-лист для швидкого старту</span></li>
+      </ul>
+    </div>
+
+    <!-- Main CTA -->
+    <a
+      href="https://t.me/nastyfamous_bot"
+      target="_blank"
+      class="animate-fade delay-3 inline-flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white text-xl font-bold px-10 py-5 rounded-2xl shadow-lg hover:shadow-xl transition w-full justify-center mb-4"
+    >
+      <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/>
+      </svg>
+      Перейти в Telegram-бота →
+    </a>
+
+    <p class="text-sm text-gray-400 animate-fade delay-3">
+      Натисни кнопку вище — бот одразу видасть тобі доступ до всіх матеріалів
+    </p>
+
+    <!-- Support -->
+    <div class="mt-10 pt-8 border-t border-gray-100 animate-fade delay-3">
+      <p class="text-sm text-gray-400">Виникли питання? <a href="https://t.me/khn_de" class="text-green-600 hover:underline">Написати в підтримку</a></p>
+    </div>
+
+  </div>
+
+</body>
+</html>
