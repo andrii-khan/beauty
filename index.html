@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HairBloom — Інтенсив з догляду за волоссям</title>
+  <meta name="description" content="Доглядай за волоссям правильно. Результат за 3 місяці — густіше, сильніше, блискучіше волосся." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            green: {
+              50:  '#f0faf4',
+              100: '#d6f4e2',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+            },
+            rose: {
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+            },
+            cream: '#fdf8f5',
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #fdf8f5; }
+    .font-display { font-family: 'Playfair Display', serif; }
+
+    /* gradient hero */
+    .hero-bg {
+      background: linear-gradient(135deg, #f0fdf4 0%, #fdf8f5 40%, #fff1f2 100%);
+    }
+
+    /* Countdown digits */
+    .digit-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      min-width: 64px;
+    }
+
+    /* Pulse badge */
+    @keyframes pulse-ring {
+      0%   { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background: #f43f5e;
+      animation: pulse-ring 1.5s ease-out infinite;
+    }
+    .pulse-dot { position: relative; }
+
+    /* sticky CTA bar */
+    #sticky-bar {
+      transition: transform 0.3s ease;
+    }
+
+    /* FAQ */
+    .faq-answer { display: none; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-arrow { transition: transform 0.2s ease; }
+
+    /* Lang switcher active */
+    .lang-btn.active {
+      background: #16a34a;
+      color: white;
+    }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body class="text-gray-800">
+
+<!-- ░░ STICKY TOP BAR ░░ -->
+<div id="sticky-bar" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-b border-green-100 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 py-2 flex items-center justify-between gap-4 flex-wrap">
+    <p class="text-sm font-semibold text-green-700 lang-text" data-key="sticky_text">🔥 Знижка діє ще:</p>
+    <div class="flex gap-2 items-center">
+      <div class="digit-card px-3 py-1 text-center">
+        <span id="top-h" class="text-lg font-bold text-green-700">00</span>
+        <div class="text-[10px] text-gray-400 lang-text" data-key="hours">год</div>
+      </div>
+      <span class="font-bold text-green-600">:</span>
+      <div class="digit-card px-3 py-1 text-center">
+        <span id="top-m" class="text-lg font-bold text-green-700">00</span>
+        <div class="text-[10px] text-gray-400 lang-text" data-key="minutes">хв</div>
+      </div>
+      <span class="font-bold text-green-600">:</span>
+      <div class="digit-card px-3 py-1 text-center">
+        <span id="top-s" class="text-lg font-bold text-green-700">00</span>
+        <div class="text-[10px] text-gray-400 lang-text" data-key="seconds">с</div>
+      </div>
+    </div>
+    <a href="#buy" class="bg-rose-500 hover:bg-rose-600 text-white text-sm font-bold px-5 py-2 rounded-full transition lang-text" data-key="cta_short">Купити зі знижкою</a>
+    <!-- Lang switcher -->
+    <div class="flex gap-1">
+      <button onclick="setLang('uk')" class="lang-btn active text-xs font-bold px-2 py-1 rounded-full border border-green-200 transition">UA</button>
+      <button onclick="setLang('ru')" class="lang-btn text-xs font-bold px-2 py-1 rounded-full border border-green-200 transition">RU</button>
+      <button onclick="setLang('en')" class="lang-btn text-xs font-bold px-2 py-1 rounded-full border border-green-200 transition">EN</button>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ HERO ░░ -->
+<section class="hero-bg pt-24 pb-16 px-4">
+  <div class="max-w-3xl mx-auto text-center">
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 bg-rose-100 text-rose-600 font-semibold text-sm px-4 py-1.5 rounded-full mb-6">
+      <span class="pulse-dot inline-block w-2 h-2 bg-rose-500 rounded-full"></span>
+      <span class="lang-text" data-key="badge">🌿 Старт завтра — місця обмежені</span>
+    </div>
+
+    <h1 class="font-display text-4xl md:text-6xl font-black text-gray-900 leading-tight mb-4">
+      <span class="lang-text" data-key="hero_h1_1">Зупини випадіння.</span><br/>
+      <span class="text-green-600 lang-text" data-key="hero_h1_2">Поверни розкіш волоссю.</span>
+    </h1>
+    <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-xl mx-auto lang-text" data-key="hero_sub">
+      Мрієш про густе, блискуче, здорове волосся? Системний підхід — харчування, догляд і нутрієнти — за 3 місяці змінить усе.
+    </p>
+
+    <!-- Price block -->
+    <div class="flex items-center justify-center gap-4 mb-6">
+      <span class="text-gray-400 line-through text-2xl">$60</span>
+      <span class="text-5xl font-black text-green-700">$11</span>
+      <span class="bg-rose-500 text-white text-sm font-bold px-3 py-1 rounded-full">-82%</span>
+    </div>
+
+    <a href="#buy" class="inline-block bg-green-600 hover:bg-green-700 text-white text-lg font-bold px-10 py-4 rounded-2xl shadow-lg hover:shadow-xl transition mb-4 lang-text" data-key="cta_main">
+      Отримати доступ зі знижкою →
+    </a>
+    <p class="text-sm text-gray-400 lang-text" data-key="guarantee_line">14-денна гарантія повернення коштів</p>
+
+    <!-- Countdown -->
+    <div class="mt-10">
+      <p class="text-sm text-rose-600 font-semibold mb-3 lang-text" data-key="timer_label">⏳ Знижка зникне через:</p>
+      <div class="flex justify-center gap-4">
+        <div class="digit-card px-5 py-3 text-center">
+          <div id="hero-h" class="text-4xl font-black text-green-700">00</div>
+          <div class="text-xs text-gray-400 mt-1 lang-text" data-key="hours">год</div>
+        </div>
+        <div class="digit-card px-5 py-3 text-center">
+          <div id="hero-m" class="text-4xl font-black text-green-700">00</div>
+          <div class="text-xs text-gray-400 mt-1 lang-text" data-key="minutes">хв</div>
+        </div>
+        <div class="digit-card px-5 py-3 text-center">
+          <div id="hero-s" class="text-4xl font-black text-green-700">00</div>
+          <div class="text-xs text-gray-400 mt-1 lang-text" data-key="seconds">с</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ PAIN POINTS ░░ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-3 lang-text" data-key="pain_title">Тобі знайоме це?</h2>
+    <p class="text-center text-gray-500 mb-10 lang-text" data-key="pain_sub">Ти не одна. Тисячі жінок мовчки страждають від цього щодня.</p>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal bg-rose-50 rounded-2xl p-6 border border-rose-100">
+        <div class="text-3xl mb-3">😔</div>
+        <h3 class="font-bold text-gray-900 mb-2 lang-text" data-key="pain1_title">Щітка і злив в жаху</h3>
+        <p class="text-gray-600 text-sm lang-text" data-key="pain1_text">Ти відтягуєш миття голови, бо не хочеш бачити, скільки волосся випало цього разу.</p>
+      </div>
+      <div class="reveal bg-rose-50 rounded-2xl p-6 border border-rose-100">
+        <div class="text-3xl mb-3">💸</div>
+        <h3 class="font-bold text-gray-900 mb-2 lang-text" data-key="pain2_title">Гроші на вітер</h3>
+        <p class="text-gray-600 text-sm lang-text" data-key="pain2_text">Дорогі шампуні, ампули, масажі, вітаміни наосліп. Ефект — на два тижні, а потім все повертається.</p>
+      </div>
+      <div class="reveal bg-rose-50 rounded-2xl p-6 border border-rose-100">
+        <div class="text-3xl mb-3">🪞</div>
+        <h3 class="font-bold text-gray-900 mb-2 lang-text" data-key="pain3_title">Не подобаєшся собі</h3>
+        <p class="text-gray-600 text-sm lang-text" data-key="pain3_text">Тонке, ламке, тьмяне волосся знижує впевненість. Ти ховаєш його в пучок і мрієш про інше.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FOR WHOM ░░ -->
+<section class="py-16 px-4 bg-green-50">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-10 lang-text" data-key="forwhom_title">Для кого цей інтенсив?</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="reveal flex gap-4 items-start bg-white rounded-2xl p-5 shadow-sm">
+        <span class="text-2xl">✅</span>
+        <p class="text-gray-700 lang-text" data-key="fw1">Жінкам, які хочуть зрозуміти <strong>чому</strong> випадає волосся, а не просто маскувати симптоми.</p>
+      </div>
+      <div class="reveal flex gap-4 items-start bg-white rounded-2xl p-5 shadow-sm">
+        <span class="text-2xl">✅</span>
+        <p class="text-gray-700 lang-text" data-key="fw2">Тим, хто перепробував купу засобів — і нічого не дало стійкого результату.</p>
+      </div>
+      <div class="reveal flex gap-4 items-start bg-white rounded-2xl p-5 shadow-sm">
+        <span class="text-2xl">✅</span>
+        <p class="text-gray-700 lang-text" data-key="fw3">Тим, хто шукає <strong>системний підхід</strong> без чарівних пігулок і маркетингових обіцянок.</p>
+      </div>
+      <div class="reveal flex gap-4 items-start bg-white rounded-2xl p-5 shadow-sm">
+        <span class="text-2xl">✅</span>
+        <p class="text-gray-700 lang-text" data-key="fw4">Жінкам будь-якого віку та рівня знань. Тільки бажання змінити ситуацію.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ WHAT'S INSIDE ░░ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-3 lang-text" data-key="inside_title">Що всередині інтенсиву?</h2>
+    <p class="text-center text-gray-500 mb-10 lang-text" data-key="inside_sub">9 блоків — від аналізів до рецептів смузі. Чітка система без води.</p>
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">🔬</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m1">Аналізи та їх розшифровка</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m1d">Які здавати, коли і як читати результати.</p>
+      </div>
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">🥗</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m2">Правила харчування</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m2d">Що їсти щодня для росту та сили волосся.</p>
+      </div>
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">💊</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m3">Дієтичні добавки та вітаміни</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m3d">Що справді працює — і як обрати під себе.</p>
+      </div>
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">🧴</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m4">Як обирати шампуні та сироватки</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m4d">Розбір складів без маркетингових міфів.</p>
+      </div>
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">🩸</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m5">Кровообіг шкіри голови</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m5d">Методи стимуляції росту через мікроциркуляцію.</p>
+      </div>
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">🧠</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m6">Стрес і волосся</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m6d">Реальні техніки зменшення його впливу.</p>
+      </div>
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">🥤</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m7">Смузі та суперфуди</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m7d">Смачні рецепти для живлення зсередини.</p>
+      </div>
+      <div class="reveal bg-green-50 border border-green-100 rounded-2xl p-5">
+        <div class="text-2xl mb-2">📋</div>
+        <h3 class="font-bold mb-1 lang-text" data-key="m8">Топ-5 причин проблем</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m8d">Навчишся бачити справжні причини — не гадати.</p>
+      </div>
+      <div class="reveal bg-rose-50 border border-rose-200 rounded-2xl p-5">
+        <div class="text-2xl mb-2">🎁</div>
+        <h3 class="font-bold mb-1 text-rose-700 lang-text" data-key="m9">Бонус при оплаті сьогодні</h3>
+        <p class="text-sm text-gray-500 lang-text" data-key="m9d">Чек-лист для швидкої оцінки пошкодження волосся.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ RESULTS ░░ -->
+<section class="py-16 px-4 bg-gradient-to-br from-green-50 to-rose-50">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="font-display text-3xl md:text-4xl font-bold mb-3 lang-text" data-key="results_title">Результати після інтенсиву</h2>
+    <p class="text-gray-500 mb-10 lang-text" data-key="results_sub">Реальні зміни, які відчуваєш і бачиш.</p>
+    <div class="grid md:grid-cols-2 gap-6 text-left">
+      <div class="reveal flex gap-3 items-start"><span class="text-green-500 text-xl mt-0.5">✦</span><p class="text-gray-700 lang-text" data-key="r1">Зрозумієш, <strong>чому</strong> твоє волосся слабне, ламається або випадає.</p></div>
+      <div class="reveal flex gap-3 items-start"><span class="text-green-500 text-xl mt-0.5">✦</span><p class="text-gray-700 lang-text" data-key="r2">Отримаєш чіткий план дій — без зайвих порад з інтернету.</p></div>
+      <div class="reveal flex gap-3 items-start"><span class="text-green-500 text-xl mt-0.5">✦</span><p class="text-gray-700 lang-text" data-key="r3">Дізнаєшся, які нутрієнти та засоби потрібні <strong>саме тобі</strong>.</p></div>
+      <div class="reveal flex gap-3 items-start"><span class="text-green-500 text-xl mt-0.5">✦</span><p class="text-gray-700 lang-text" data-key="r4">Зупиниш випадіння і почнеш бачити перші результати вже у 1-й місяць.</p></div>
+      <div class="reveal flex gap-3 items-start"><span class="text-green-500 text-xl mt-0.5">✦</span><p class="text-gray-700 lang-text" data-key="r5">+20% до густоти за 3 місяці за системного підходу.</p></div>
+      <div class="reveal flex gap-3 items-start"><span class="text-green-500 text-xl mt-0.5">✦</span><p class="text-gray-700 lang-text" data-key="r6">І головне — <strong>почнеш подобатися собі знову!</strong></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ HOW IT WORKS ░░ -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-10 lang-text" data-key="how_title">Як це працює?</h2>
+    <div class="space-y-6">
+      <div class="reveal flex gap-5 items-start">
+        <div class="w-12 h-12 shrink-0 rounded-full bg-green-100 text-green-700 font-black text-xl flex items-center justify-center">1</div>
+        <div>
+          <h3 class="font-bold text-lg mb-1 lang-text" data-key="step1_t">Оплачуєш і отримуєш доступ</h3>
+          <p class="text-gray-500 text-sm lang-text" data-key="step1_d">Одразу після оплати — доступ до повного інтенсиву в Telegram. Матеріали відкриті 24/7.</p>
+        </div>
+      </div>
+      <div class="reveal flex gap-5 items-start">
+        <div class="w-12 h-12 shrink-0 rounded-full bg-green-100 text-green-700 font-black text-xl flex items-center justify-center">2</div>
+        <div>
+          <h3 class="font-bold text-lg mb-1 lang-text" data-key="step2_t">Проходиш у своєму темпі</h3>
+          <p class="text-gray-500 text-sm lang-text" data-key="step2_d">Доступ активний 60 днів. Повертайся до улюблених блоків скільки завгодно.</p>
+        </div>
+      </div>
+      <div class="reveal flex gap-5 items-start">
+        <div class="w-12 h-12 shrink-0 rounded-full bg-rose-100 text-rose-600 font-black text-xl flex items-center justify-center">3</div>
+        <div>
+          <h3 class="font-bold text-lg mb-1 lang-text" data-key="step3_t">Бачиш результат за 3 місяці</h3>
+          <p class="text-gray-500 text-sm lang-text" data-key="step3_d">Дотримуєшся системи — і волосся дякує тобі густотою, силою та блиском.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ BUY BLOCK ░░ -->
+<section id="buy" class="py-16 px-4 bg-gradient-to-br from-green-700 to-green-800">
+  <div class="max-w-2xl mx-auto text-center text-white">
+    <p class="text-rose-300 font-semibold text-sm mb-2 lang-text" data-key="buy_label">🔥 Спеціальна пропозиція</p>
+    <h2 class="font-display text-3xl md:text-4xl font-bold mb-4 lang-text" data-key="buy_title">Почни зміни вже сьогодні</h2>
+    <p class="text-green-200 mb-6 lang-text" data-key="buy_sub">При оплаті зараз — отримаєш бонусний чек-лист для старту.</p>
+
+    <div class="bg-white/10 backdrop-blur rounded-3xl p-8 mb-6">
+      <div class="flex items-center justify-center gap-4 mb-2">
+        <span class="text-green-300 line-through text-2xl">$60</span>
+        <span class="text-white text-6xl font-black">$11</span>
+        <span class="bg-rose-400 text-white text-sm font-bold px-3 py-1 rounded-full">-82%</span>
+      </div>
+      <p class="text-green-200 text-sm mb-6 lang-text" data-key="buy_access">✅ 60 днів доступу · ✅ Telegram · ✅ 9 блоків · ✅ Бонус</p>
+
+      <!-- Countdown in buy section -->
+      <p class="text-rose-300 text-sm font-semibold mb-3 lang-text" data-key="timer_label">⏳ Знижка зникне через:</p>
+      <div class="flex justify-center gap-4 mb-6">
+        <div class="bg-white/20 rounded-xl px-5 py-3 text-center">
+          <div id="buy-h" class="text-3xl font-black text-white">00</div>
+          <div class="text-xs text-green-200 lang-text" data-key="hours">год</div>
+        </div>
+        <div class="bg-white/20 rounded-xl px-5 py-3 text-center">
+          <div id="buy-m" class="text-3xl font-black text-white">00</div>
+          <div class="text-xs text-green-200 lang-text" data-key="minutes">хв</div>
+        </div>
+        <div class="bg-white/20 rounded-xl px-5 py-3 text-center">
+          <div id="buy-s" class="text-3xl font-black text-white">00</div>
+          <div class="text-xs text-green-200 lang-text" data-key="seconds">с</div>
+        </div>
+      </div>
+
+      <a href="#" class="block w-full bg-rose-500 hover:bg-rose-400 text-white text-xl font-black py-5 rounded-2xl transition shadow-xl lang-text" data-key="cta_main">
+        Отримати доступ зі знижкою →
+      </a>
+    </div>
+    <p class="text-green-300 text-sm lang-text" data-key="guarantee_full">🛡️ 14-денна гарантія повернення коштів. Якщо не підійде — повернемо без питань.</p>
+  </div>
+</section>
+
+<!-- ░░ GUARANTEE ░░ -->
+<section class="py-12 px-4 bg-white">
+  <div class="max-w-2xl mx-auto flex gap-6 items-center reveal">
+    <div class="text-6xl shrink-0">🛡️</div>
+    <div>
+      <h3 class="font-bold text-xl mb-2 lang-text" data-key="g_title">14-денна гарантія</h3>
+      <p class="text-gray-500 lang-text" data-key="g_text">Якщо протягом 14 днів після покупки відчуєш, що інтенсив не відповідає твоїм очікуванням — повернемо кошти без зайвих питань. Ти нічим не ризикуєш.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FAQ ░░ -->
+<section class="py-16 px-4 bg-green-50">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="font-display text-3xl font-bold text-center mb-8 lang-text" data-key="faq_title">Поширені запитання</h2>
+    <div class="space-y-3" id="faq-list">
+      <div class="faq-item bg-white rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center px-6 py-4">
+          <span class="font-semibold lang-text" data-key="faq1q">Чи потрібні спеціальні знання?</span>
+          <span class="faq-arrow text-green-600 text-xl">▾</span>
+        </div>
+        <div class="faq-answer px-6 pb-4 text-gray-500 text-sm lang-text" data-key="faq1a">Ні. Інтенсив підходить для будь-якого рівня. Все пояснюємо з нуля — без складних термінів.</div>
+      </div>
+      <div class="faq-item bg-white rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center px-6 py-4">
+          <span class="font-semibold lang-text" data-key="faq2q">Скільки часу займає?</span>
+          <span class="faq-arrow text-green-600 text-xl">▾</span>
+        </div>
+        <div class="faq-answer px-6 pb-4 text-gray-500 text-sm lang-text" data-key="faq2a">Програма на 3 місяці. Перший тиждень — всі матеріали. Далі — впроваджуєш поступово. 30 хвилин на день достатньо.</div>
+      </div>
+      <div class="faq-item bg-white rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center px-6 py-4">
+          <span class="font-semibold lang-text" data-key="faq3q">А якщо в мене генетика?</span>
+          <span class="faq-arrow text-green-600 text-xl">▾</span>
+        </div>
+        <div class="faq-answer px-6 pb-4 text-gray-500 text-sm lang-text" data-key="faq3a">Генетика — це 20%. Інші 80% залежать від догляду, харчування і способу життя. Не ставте на собі хрест раніше часу.</div>
+      </div>
+      <div class="faq-item bg-white rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center px-6 py-4">
+          <span class="font-semibold lang-text" data-key="faq4q">Як отримаю доступ?</span>
+          <span class="faq-arrow text-green-600 text-xl">▾</span>
+        </div>
+        <div class="faq-answer px-6 pb-4 text-gray-500 text-sm lang-text" data-key="faq4a">Після оплати — посилання на Telegram-канал одразу на пошту. Доступ активний 60 днів з можливістю продовження.</div>
+      </div>
+      <div class="faq-item bg-white rounded-2xl overflow-hidden cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center px-6 py-4">
+          <span class="font-semibold lang-text" data-key="faq5q">Що якщо не підійде?</span>
+          <span class="faq-arrow text-green-600 text-xl">▾</span>
+        </div>
+        <div class="faq-answer px-6 pb-4 text-gray-500 text-sm lang-text" data-key="faq5a">14-денна гарантія. Напиши нам — і ми повернемо кошти без жодних питань.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FOOTER CTA ░░ -->
+<section class="py-16 px-4 bg-rose-50 border-t border-rose-100">
+  <div class="max-w-xl mx-auto text-center">
+    <h2 class="font-display text-3xl font-bold mb-4 lang-text" data-key="footer_cta_h">Ти заслуговуєш на розкішне волосся</h2>
+    <p class="text-gray-500 mb-6 lang-text" data-key="footer_cta_p">Зроби перший крок — і за 3 місяці ти не впізнаєш своє волосся.</p>
+    <a href="#buy" class="inline-block bg-green-600 hover:bg-green-700 text-white text-lg font-bold px-10 py-4 rounded-2xl shadow-lg transition lang-text" data-key="cta_main">
+      Отримати доступ зі знижкою →
+    </a>
+    <p class="text-sm text-gray-400 mt-4 lang-text" data-key="guarantee_line">14-денна гарантія повернення коштів</p>
+  </div>
+</section>
+
+<!-- ░░ FOOTER ░░ -->
+<footer class="py-8 px-4 bg-gray-900 text-gray-400 text-center text-sm">
+  <p class="mb-2">© 2026 HairBloom. <span class="lang-text" data-key="rights">Всі права захищені.</span></p>
+  <div class="flex justify-center gap-4">
+    <a href="#" class="hover:text-white transition lang-text" data-key="privacy">Політика конфіденційності</a>
+    <a href="#" class="hover:text-white transition lang-text" data-key="offer">Договір оферти</a>
+  </div>
+</footer>
+
+<!-- ░░ SCRIPTS ░░ -->
+<script>
+// ── TRANSLATIONS ──────────────────────────────────────────────
+const T = {
+  uk: {
+    sticky_text: '🔥 Знижка діє ще:',
+    hours: 'год', minutes: 'хв', seconds: 'с',
+    cta_short: 'Купити зі знижкою',
+    badge: '🌿 Старт завтра — місця обмежені',
+    hero_h1_1: 'Зупини випадіння.',
+    hero_h1_2: 'Поверни розкіш волоссю.',
+    hero_sub: 'Мрієш про густе, блискуче, здорове волосся? Системний підхід — харчування, догляд і нутрієнти — за 3 місяці змінить усе.',
+    cta_main: 'Отримати доступ зі знижкою →',
+    guarantee_line: '14-денна гарантія повернення коштів',
+    timer_label: '⏳ Знижка зникне через:',
+    pain_title: 'Тобі знайоме це?',
+    pain_sub: 'Ти не одна. Тисячі жінок мовчки страждають від цього щодня.',
+    pain1_title: 'Щітка і злив в жаху',
+    pain1_text: 'Ти відтягуєш миття голови, бо не хочеш бачити, скільки волосся випало цього разу.',
+    pain2_title: 'Гроші на вітер',
+    pain2_text: 'Дорогі шампуні, ампули, масажі, вітаміни наосліп. Ефект — на два тижні, а потім все повертається.',
+    pain3_title: 'Не подобаєшся собі',
+    pain3_text: 'Тонке, ламке, тьмяне волосся знижує впевненість. Ти ховаєш його в пучок і мрієш про інше.',
+    forwhom_title: 'Для кого цей інтенсив?',
+    fw1: 'Жінкам, які хочуть зрозуміти <strong>чому</strong> випадає волосся, а не просто маскувати симптоми.',
+    fw2: 'Тим, хто перепробував купу засобів — і нічого не дало стійкого результату.',
+    fw3: 'Тим, хто шукає <strong>системний підхід</strong> без чарівних пігулок і маркетингових обіцянок.',
+    fw4: 'Жінкам будь-якого віку та рівня знань. Тільки бажання змінити ситуацію.',
+    inside_title: 'Що всередині інтенсиву?',
+    inside_sub: '9 блоків — від аналізів до рецептів смузі. Чітка система без води.',
+    m1: 'Аналізи та їх розшифровка', m1d: 'Які здавати, коли і як читати результати.',
+    m2: 'Правила харчування', m2d: 'Що їсти щодня для росту та сили волосся.',
+    m3: 'Дієтичні добавки та вітаміни', m3d: 'Що справді працює — і як обрати під себе.',
+    m4: 'Як обирати шампуні та сироватки', m4d: 'Розбір складів без маркетингових міфів.',
+    m5: 'Кровообіг шкіри голови', m5d: 'Методи стимуляції росту через мікроциркуляцію.',
+    m6: 'Стрес і волосся', m6d: 'Реальні техніки зменшення його впливу.',
+    m7: 'Смузі та суперфуди', m7d: 'Смачні рецепти для живлення зсередини.',
+    m8: 'Топ-5 причин проблем', m8d: 'Навчишся бачити справжні причини — не гадати.',
+    m9: 'Бонус при оплаті сьогодні', m9d: 'Чек-лист для швидкої оцінки пошкодження волосся.',
+    results_title: 'Результати після інтенсиву',
+    results_sub: 'Реальні зміни, які відчуваєш і бачиш.',
+    r1: 'Зрозумієш, <strong>чому</strong> твоє волосся слабне, ламається або випадає.',
+    r2: 'Отримаєш чіткий план дій — без зайвих порад з інтернету.',
+    r3: 'Дізнаєшся, які нутрієнти та засоби потрібні <strong>саме тобі</strong>.',
+    r4: 'Зупиниш випадіння і побачиш перші результати вже у 1-й місяць.',
+    r5: '+20% до густоти за 3 місяці за системного підходу.',
+    r6: 'І головне — <strong>почнеш подобатися собі знову!</strong>',
+    how_title: 'Як це працює?',
+    step1_t: 'Оплачуєш і отримуєш доступ', step1_d: 'Одразу після оплати — доступ до повного інтенсиву в Telegram. Матеріали відкриті 24/7.',
+    step2_t: 'Проходиш у своєму темпі', step2_d: 'Доступ активний 60 днів. Повертайся до улюблених блоків скільки завгодно.',
+    step3_t: 'Бачиш результат за 3 місяці', step3_d: 'Дотримуєшся системи — і волосся дякує тобі густотою, силою та блиском.',
+    buy_label: '🔥 Спеціальна пропозиція',
+    buy_title: 'Почни зміни вже сьогодні',
+    buy_sub: 'При оплаті зараз — отримаєш бонусний чек-лист для старту.',
+    buy_access: '✅ 60 днів доступу · ✅ Telegram · ✅ 9 блоків · ✅ Бонус',
+    g_title: '14-денна гарантія',
+    g_text: 'Якщо протягом 14 днів після покупки відчуєш, що інтенсив не відповідає твоїм очікуванням — повернемо кошти без зайвих питань. Ти нічим не ризикуєш.',
+    faq_title: 'Поширені запитання',
+    faq1q: 'Чи потрібні спеціальні знання?', faq1a: 'Ні. Інтенсив підходить для будь-якого рівня. Все пояснюємо з нуля — без складних термінів.',
+    faq2q: 'Скільки часу займає?', faq2a: 'Програма на 3 місяці. Перший тиждень — всі матеріали. Далі — впроваджуєш поступово. 30 хвилин на день достатньо.',
+    faq3q: 'А якщо в мене генетика?', faq3a: 'Генетика — це 20%. Інші 80% залежать від догляду, харчування і способу життя.',
+    faq4q: 'Як отримаю доступ?', faq4a: 'Після оплати — посилання на Telegram-канал одразу на пошту. Доступ активний 60 днів.',
+    faq5q: 'Що якщо не підійде?', faq5a: '14-денна гарантія. Напиши нам — і ми повернемо кошти без жодних питань.',
+    footer_cta_h: 'Ти заслуговуєш на розкішне волосся',
+    footer_cta_p: 'Зроби перший крок — і за 3 місяці ти не впізнаєш своє волосся.',
+    rights: 'Всі права захищені.',
+    privacy: 'Політика конфіденційності', offer: 'Договір оферти',
+    guarantee_full: '🛡️ 14-денна гарантія повернення коштів. Якщо не підійде — повернемо без питань.',
+  },
+  ru: {
+    sticky_text: '🔥 Скидка действует ещё:',
+    hours: 'ч', minutes: 'мин', seconds: 'с',
+    cta_short: 'Купить со скидкой',
+    badge: '🌿 Старт завтра — места ограничены',
+    hero_h1_1: 'Останови выпадение.',
+    hero_h1_2: 'Верни роскошь волосам.',
+    hero_sub: 'Мечтаешь о густых, блестящих, здоровых волосах? Системный подход — питание, уход и нутриенты — за 3 месяца изменит всё.',
+    cta_main: 'Получить доступ со скидкой →',
+    guarantee_line: '14-дневная гарантия возврата',
+    timer_label: '⏳ Скидка исчезнет через:',
+    pain_title: 'Тебе знакомо это?',
+    pain_sub: 'Ты не одна. Тысячи женщин молча страдают от этого каждый день.',
+    pain1_title: 'Расчёска и слив в ужасе',
+    pain1_text: 'Ты откладываешь мытьё головы, потому что не хочешь видеть, сколько волос выпало.',
+    pain2_title: 'Деньги на ветер',
+    pain2_text: 'Дорогие шампуни, ампулы, массажи, витамины наугад. Эффект — на две недели, потом всё возвращается.',
+    pain3_title: 'Не нравишься себе',
+    pain3_text: 'Тонкие, ломкие, тусклые волосы снижают уверенность. Прячешь их в пучок и мечтаешь о другом.',
+    forwhom_title: 'Для кого этот интенсив?',
+    fw1: 'Женщинам, которые хотят понять <strong>почему</strong> выпадают волосы, а не просто маскировать симптомы.',
+    fw2: 'Тем, кто перепробовал кучу средств — и ничего не дало стойкого результата.',
+    fw3: 'Тем, кто ищет <strong>системный подход</strong> без волшебных таблеток.',
+    fw4: 'Женщинам любого возраста и уровня знаний. Только желание изменить ситуацию.',
+    inside_title: 'Что внутри интенсива?',
+    inside_sub: '9 блоков — от анализов до рецептов смузи. Чёткая система без воды.',
+    m1: 'Анализы и их расшифровка', m1d: 'Какие сдавать, когда и как читать результаты.',
+    m2: 'Правила питания', m2d: 'Что есть каждый день для роста и силы волос.',
+    m3: 'Диетические добавки и витамины', m3d: 'Что реально работает — и как выбрать под себя.',
+    m4: 'Как выбирать шампуни и сыворотки', m4d: 'Разбор составов без маркетинговых мифов.',
+    m5: 'Кровообращение кожи головы', m5d: 'Методы стимуляции роста через микроциркуляцию.',
+    m6: 'Стресс и волосы', m6d: 'Реальные техники снижения его влияния.',
+    m7: 'Смузи и суперфуды', m7d: 'Вкусные рецепты для питания изнутри.',
+    m8: 'Топ-5 причин проблем', m8d: 'Научишься видеть реальные причины — не угадывать.',
+    m9: 'Бонус при оплате сегодня', m9d: 'Чек-лист для быстрой оценки повреждения волос.',
+    results_title: 'Результаты после интенсива',
+    results_sub: 'Реальные изменения, которые чувствуешь и видишь.',
+    r1: 'Поймёшь, <strong>почему</strong> твои волосы слабеют, ломаются или выпадают.',
+    r2: 'Получишь чёткий план действий — без лишних советов из интернета.',
+    r3: 'Узнаешь, какие нутриенты нужны <strong>именно тебе</strong>.',
+    r4: 'Остановишь выпадение и увидишь первые результаты уже в 1-й месяц.',
+    r5: '+20% к густоте за 3 месяца при системном подходе.',
+    r6: 'И главное — <strong>снова начнёшь нравиться себе!</strong>',
+    how_title: 'Как это работает?',
+    step1_t: 'Оплачиваешь и получаешь доступ', step1_d: 'Сразу после оплаты — доступ к полному интенсиву в Telegram. Материалы открыты 24/7.',
+    step2_t: 'Проходишь в своём темпе', step2_d: 'Доступ активен 60 дней. Возвращайся к любимым блокам сколько угодно.',
+    step3_t: 'Видишь результат за 3 месяца', step3_d: 'Следуешь системе — и волосы благодарят тебя густотой, силой и блеском.',
+    buy_label: '🔥 Специальное предложение',
+    buy_title: 'Начни изменения уже сегодня',
+    buy_sub: 'При оплате сейчас — получишь бонусный чек-лист для старта.',
+    buy_access: '✅ 60 дней доступа · ✅ Telegram · ✅ 9 блоков · ✅ Бонус',
+    g_title: '14-дневная гарантия',
+    g_text: 'Если в течение 14 дней после покупки почувствуешь, что интенсив не соответствует ожиданиям — вернём деньги без лишних вопросов. Ты ничем не рискуешь.',
+    faq_title: 'Частые вопросы',
+    faq1q: 'Нужны ли специальные знания?', faq1a: 'Нет. Интенсив подходит для любого уровня. Всё объясняем с нуля.',
+    faq2q: 'Сколько времени занимает?', faq2a: 'Программа на 3 месяца. Первая неделя — все материалы. Далее — внедряешь постепенно. 30 минут в день достаточно.',
+    faq3q: 'А если у меня генетика?', faq3a: 'Генетика — это 20%. Остальные 80% зависят от ухода, питания и образа жизни.',
+    faq4q: 'Как получу доступ?', faq4a: 'После оплаты — ссылка на Telegram-канал сразу на почту. Доступ активен 60 дней.',
+    faq5q: 'Что если не подойдёт?', faq5a: '14-дневная гарантия. Напиши нам — вернём деньги без вопросов.',
+    footer_cta_h: 'Ты заслуживаешь роскошных волос',
+    footer_cta_p: 'Сделай первый шаг — и за 3 месяца ты не узнаешь свои волосы.',
+    rights: 'Все права защищены.',
+    privacy: 'Политика конфиденциальности', offer: 'Договор оферты',
+    guarantee_full: '🛡️ 14-дневная гарантия возврата. Если не подойдёт — вернём без вопросов.',
+  },
+  en: {
+    sticky_text: '🔥 Discount ends in:',
+    hours: 'h', minutes: 'min', seconds: 's',
+    cta_short: 'Buy with discount',
+    badge: '🌿 Starts tomorrow — spots are limited',
+    hero_h1_1: 'Stop hair loss.',
+    hero_h1_2: 'Restore your hair\'s glory.',
+    hero_sub: 'Dreaming of thick, shiny, healthy hair? A systematic approach — nutrition, care and nutrients — will change everything in 3 months.',
+    cta_main: 'Get access with discount →',
+    guarantee_line: '14-day money-back guarantee',
+    timer_label: '⏳ Discount disappears in:',
+    pain_title: 'Does this sound familiar?',
+    pain_sub: 'You\'re not alone. Thousands of women silently suffer from this every day.',
+    pain1_title: 'Brush and drain are terrifying',
+    pain1_text: 'You delay washing your hair because you don\'t want to see how much fell out this time.',
+    pain2_title: 'Money down the drain',
+    pain2_text: 'Expensive shampoos, ampoules, massages, vitamins blindly. Effect lasts two weeks — then it all comes back.',
+    pain3_title: 'You don\'t like yourself',
+    pain3_text: 'Thin, brittle, dull hair lowers your confidence. You hide it in a bun and dream of something different.',
+    forwhom_title: 'Who is this intensive for?',
+    fw1: 'Women who want to understand <strong>why</strong> their hair falls out, not just mask the symptoms.',
+    fw2: 'Those who have tried many products — and nothing gave lasting results.',
+    fw3: 'Those looking for a <strong>systematic approach</strong> without magic pills.',
+    fw4: 'Women of any age and knowledge level. All you need is the desire to change.',
+    inside_title: 'What\'s inside the intensive?',
+    inside_sub: '9 modules — from lab tests to smoothie recipes. A clear system with no fluff.',
+    m1: 'Lab tests & how to read them', m1d: 'Which tests to take, when, and how to interpret results.',
+    m2: 'Nutrition rules', m2d: 'What to eat daily for hair growth and strength.',
+    m3: 'Dietary supplements & vitamins', m3d: 'What actually works — and how to choose for yourself.',
+    m4: 'How to choose shampoos & serums', m4d: 'Breaking down ingredients without marketing myths.',
+    m5: 'Scalp blood circulation', m5d: 'Methods to stimulate growth through microcirculation.',
+    m6: 'Stress and hair', m6d: 'Real techniques to reduce its impact.',
+    m7: 'Smoothies & superfoods', m7d: 'Tasty recipes for nourishing from within.',
+    m8: 'Top 5 root causes', m8d: 'Learn to see the real causes — stop guessing.',
+    m9: 'Bonus when paying today', m9d: 'Checklist for quick assessment of hair damage.',
+    results_title: 'Results after the intensive',
+    results_sub: 'Real changes you feel and see.',
+    r1: 'Understand <strong>why</strong> your hair weakens, breaks, or falls out.',
+    r2: 'Get a clear action plan — without random advice from the internet.',
+    r3: 'Learn which nutrients and products are right <strong>for you specifically</strong>.',
+    r4: 'Stop hair loss and see first results in month 1.',
+    r5: '+20% to density in 3 months with a systematic approach.',
+    r6: 'Most importantly — <strong>you\'ll love yourself in the mirror again!</strong>',
+    how_title: 'How does it work?',
+    step1_t: 'Pay and get access', step1_d: 'Immediately after payment — access to the full intensive in Telegram. Materials open 24/7.',
+    step2_t: 'Go at your own pace', step2_d: 'Access is active for 60 days. Return to your favourite modules as many times as you like.',
+    step3_t: 'See results in 3 months', step3_d: 'Follow the system — and your hair will thank you with density, strength and shine.',
+    buy_label: '🔥 Special offer',
+    buy_title: 'Start the change today',
+    buy_sub: 'Pay now — get a bonus checklist to kick things off.',
+    buy_access: '✅ 60-day access · ✅ Telegram · ✅ 9 modules · ✅ Bonus',
+    g_title: '14-day guarantee',
+    g_text: 'If within 14 days of purchase you feel the intensive doesn\'t meet your expectations — we\'ll refund without questions. You risk nothing.',
+    faq_title: 'Frequently asked questions',
+    faq1q: 'Do I need special knowledge?', faq1a: 'No. The intensive suits any level. We explain everything from scratch — no complex jargon.',
+    faq2q: 'How long does it take?', faq2a: 'The programme runs 3 months. First week — all materials. Then you implement gradually. 30 minutes a day is enough.',
+    faq3q: 'What if it\'s genetics?', faq3a: 'Genetics is 20%. The other 80% depends on care, nutrition and lifestyle. Don\'t give up before you try.',
+    faq4q: 'How will I get access?', faq4a: 'After payment — a Telegram channel link is sent to your email. Access is active for 60 days.',
+    faq5q: 'What if it doesn\'t work for me?', faq5a: '14-day guarantee. Message us — and we\'ll refund without any questions.',
+    footer_cta_h: 'You deserve luxurious hair',
+    footer_cta_p: 'Take the first step — and in 3 months you won\'t recognise your hair.',
+    rights: 'All rights reserved.',
+    privacy: 'Privacy Policy', offer: 'Terms of offer',
+    guarantee_full: '🛡️ 14-day money-back guarantee. If it doesn\'t work — we\'ll refund, no questions.',
+  }
+};
+
+let currentLang = 'uk';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`.lang-btn`).forEach(b => { if (b.textContent.trim().toLowerCase() === lang) b.classList.add('active'); });
+  document.querySelectorAll('.lang-text[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (T[lang] && T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+  });
+}
+
+// ── COUNTDOWN ─────────────────────────────────────────────────
+function getDeadline() {
+  const key = 'hairbloom_deadline';
+  let stored = localStorage.getItem(key);
+  if (!stored) {
+    const d = new Date();
+    d.setHours(d.getHours() + 5, d.getMinutes() + 47, d.getSeconds() + 33, 0);
+    stored = d.toISOString();
+    localStorage.setItem(key, stored);
+  }
+  return new Date(stored);
+}
+
+const deadline = getDeadline();
+
+function updateCountdown() {
+  const now = new Date();
+  let diff = Math.max(0, Math.floor((deadline - now) / 1000));
+  const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+  const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+  const s = String(diff % 60).padStart(2, '0');
+  ['hero', 'top', 'buy'].forEach(p => {
+    const eh = document.getElementById(`${p}-h`);
+    const em = document.getElementById(`${p}-m`);
+    const es = document.getElementById(`${p}-s`);
+    if (eh) eh.textContent = h;
+    if (em) em.textContent = m;
+    if (es) es.textContent = s;
+  });
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ── FAQ ───────────────────────────────────────────────────────
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── LANG BUTTONS fix ─────────────────────────────────────────
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const l = btn.textContent.trim().toLowerCase();
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setLang(l);
+  });
+});
+</script>
+</body>
+</html>
